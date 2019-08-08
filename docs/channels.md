@@ -40,10 +40,10 @@ Channels provide a way to transfer a stream of values.
 
 ### Channel basics
 
-A [Channel] is conceptually very similar to `BlockingQueue`. One key difference is that
-instead of a blocking `put` operation it has a suspending [send][SendChannel.send], and instead of 
-a blocking `take` operation it has a suspending [receive][ReceiveChannel.receive].
-
+A [Channel] is conceptually very similar to Java's `BlockingQueue`. One key difference is that
+instead of the blocking `put` operation it has a suspending [send][SendChannel.send], and instead of 
+the blocking `take` operation it has a suspending [receive][ReceiveChannel.receive]. Another difference
+is that channels can be closed (normally or with an exception propagated to the opposite end of the channel).
 
 <div class="sample" markdown="1" theme="idea" data-min-compiler-version="1.3">
 
@@ -133,7 +133,7 @@ You could abstract such a producer into a function that takes channel as its par
 to common sense that results must be returned from functions. 
 
 There is a convenient coroutine builder named [produce] that makes it easy to do it right on producer side,
-and an extension function [consumeEach], that replaces a `for` loop on the consumer side:
+and an extension function [consumeEach] that replaces a `for` loop on the consumer side:
 
 <div class="sample" markdown="1" theme="idea" data-min-compiler-version="1.3">
 
