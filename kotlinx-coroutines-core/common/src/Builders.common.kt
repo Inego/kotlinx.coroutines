@@ -18,27 +18,32 @@ import kotlin.jvm.*
 // --------------- launch ---------------
 
 /**
- * Launches a new coroutine without blocking the current thread and returns a reference to the coroutine as a [Job].
+ * Launches a new coroutine from the receiving [scope][CoroutineScope] without blocking the current thread
+ * and returns a reference to the coroutine as a [Job].
  * The coroutine is cancelled when the resulting job is [cancelled][Job.cancel].
  *
- * The coroutine context is inherited from a [CoroutineScope]. Additional context elements can be specified with [context] argument.
+ * The context of the launched coroutine is inherited from the scope. Additional context elements can be specified with the [context] argument.
  * If the context does not have any dispatcher nor any other [ContinuationInterceptor], then [Dispatchers.Default] is used.
- * The parent job is inherited from a [CoroutineScope] as well, but it can also be overridden
- * with a corresponding [coroutineContext] element.
+ * The parent job is inherited from the scope as well, but it can also be overridden
+ * with the corresponding [coroutineContext] element.
  *
  * By default, the coroutine is immediately scheduled for execution.
  * Other start options can be specified via `start` parameter. See [CoroutineStart] for details.
  * An optional [start] parameter can be set to [CoroutineStart.LAZY] to start coroutine _lazily_. In this case,
- * the coroutine [Job] is created in _new_ state. It can be explicitly started with [start][Job.start] function
+ * the coroutine's [Job] is created in the _new_ state. It can be explicitly started with the [start][Job.start] function
  * and will be started implicitly on the first invocation of [join][Job.join].
  *
- * Uncaught exceptions in this coroutine cancel the parent job in the context by default
- * (unless [CoroutineExceptionHandler] is explicitly specified), which means that when `launch` is used with
- * the context of another coroutine, then any uncaught exception leads to the cancellation of the parent coroutine.
+ * Uncaught exceptions in the launched coroutine will cancel the parent job by default
+ * (unless a [CoroutineExceptionHandler] is explicitly specified). Since the parent-child hierarchy is propagated
+ * via the `Job` element of the context, by `launch`ing a coroutine with a context of another coroutine,
+ * that coroutine will be the parent for the launched coroutine
+ * any uncaught exception in the launched coroutine will lead to the cancellation of the coroutine whose context was
+ * used for `launch`.
  *
  * See [newCoroutineContext] for a description of debugging facilities that are available for a newly created coroutine.
  *
- * @param context additional to [CoroutineScope.coroutineContext] context of the coroutine.
+ * @param context additional to the context of the scope ([CoroutineScope.coroutineContext]). Typically represented
+ * by a [sum][CoroutineContext.plus] of the context [elements][CoroutineContext.Element] to be set in the resulting context.
  * @param start coroutine start option. The default value is [CoroutineStart.DEFAULT].
  * @param block the coroutine code which will be invoked in the context of the provided scope.
  **/
