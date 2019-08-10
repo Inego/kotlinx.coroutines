@@ -23,7 +23,7 @@ import kotlin.jvm.*
  * with an exception other than [CancellationException] immediately cancels its parent. This way, a parent
  * can [cancel] its own children (including all their children recursively) without cancelling itself.
  *
- * The most basic instances of [Job] are created with [launch][CoroutineScope.launch] coroutine builder or with a
+ * The most basic instances of [Job] are created with [launch][CoroutineScope.launch] coroutine builder or with the
  * `Job()` factory function. By default, a failure of any of the job's children leads to an immediate failure
  * of its parent and cancellation of the rest of its children. This behavior can be customized using [SupervisorJob].
  *

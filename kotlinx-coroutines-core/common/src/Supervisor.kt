@@ -45,7 +45,7 @@ public fun SupervisorJob0(parent: Job? = null) : Job = SupervisorJob(parent)
  * A failure of a child does not cause this scope to fail and does not affect its other children,
  * so a custom policy for handling failures of its children can be implemented. See [SupervisorJob] for details.
  * A failure of the scope itself (exception thrown in the [block] or cancellation) fails the scope with all its children,
- * but does not cancel parent job.
+ * but does not cancel the parent job.
  */
 public suspend fun <R>  supervisorScope(block: suspend CoroutineScope.() -> R): R =
     suspendCoroutineUninterceptedOrReturn { uCont ->
